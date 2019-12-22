@@ -1,7 +1,7 @@
-from setuptools import setup
+from setuptools import setup, find_packages
 
 setup(
     name="Tournament",
     version="0.0.1",
-    package_dir={'': 'Tournament'}
+    packages=find_packages(exclude=['sandbox'])
 )
