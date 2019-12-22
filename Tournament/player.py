@@ -3,12 +3,25 @@ import typing
 
 
 class Player(metaclass=ABCMeta):
+    '''
+    implement decode
+    '''
+
     def __init__(self, param: typing.Any, score: int = 1):
+        '''
+        Parameters
+        ----------
+        param : Any
+        score : int = 1
+        '''
+
         self.param = param
         self.score = score
 
     @abstractclassmethod
     def decode(self):
+        '''
+        '''
         pass
 
     def score_up(self) -> typing.NoReturn:
