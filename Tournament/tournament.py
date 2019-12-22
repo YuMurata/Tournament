@@ -92,7 +92,7 @@ class Tournament:
 
         self._log_start_round()
 
-    def new_match(self) -> TwoPlayer:
+    def new_match(self) -> (bool, TwoPlayer):
         if self.is_match:
             raise MatchException('match is already ready')
 
@@ -118,11 +118,14 @@ class Tournament:
             self.logger.info(
                 f'--- right player index: {self.right_player_index} ---')
 
-            return left_player, right_player
+            return (False, (left_player, right_player))
 
         else:
             self._new_round()
-            return self.new_match()
+            if self.is_complete:
+                return (True, None)
+            else:
+                return self.new_match()
 
     def compete(self, winner: GameWin) -> typing.NoReturn:
         if not self.is_match:
