@@ -46,3 +46,5 @@ class PlayerGroup(metaclass=ABCMeta):
     @abstractclassmethod
     def get_player(self, index: int) -> Player:
         pass
+
+TwoPlayer = typing.Tuple[Player, Player]
