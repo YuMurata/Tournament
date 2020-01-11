@@ -4,7 +4,7 @@ import typing
 
 class Player(metaclass=ABCMeta):
     '''
-    implement decode
+    implement decode(self)
     '''
 
     def __init__(self, param: typing.Any, score: int = 1):
@@ -29,3 +29,20 @@ class Player(metaclass=ABCMeta):
 
     def to_dict(self) -> dict:
         return {'score': self.score, 'param': self.param}
+
+
+class PlayerGroup(metaclass=ABCMeta):
+    '''implement
+    
+    score_up(self, index: int) -> NoReturn
+    
+    get_player(self, index: int) -> Player
+    '''
+
+    @abstractclassmethod
+    def score_up(self, index: int) -> typing.NoReturn:
+        pass
+
+    @abstractclassmethod
+    def get_player(self, index: int) -> Player:
+        pass

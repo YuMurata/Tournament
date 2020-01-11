@@ -1,4 +1,4 @@
 from .tournament import Tournament, TournamentException
 from .tournament import GameWin, CompleteException
-from .player import Player
+from .player import Player, PlayerGroup
 from .evaluator import Evaluator

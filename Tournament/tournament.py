@@ -3,6 +3,7 @@ from random import sample
 import logging
 from .type_hint import PlayerList, TwoPlayer
 import typing
+from .player import PlayerGroup
 
 
 class TournamentException(Exception):
@@ -33,23 +34,33 @@ class GameWin(Enum):
 
 
 class Tournament:
-    def __init__(self, player_list: PlayerList, *,
-                 handler: logging.StreamHandler = None):
+    @classmethod
+    def make_player_index_list(cls, player_num: int) -> (list, list):
+        current_player_index_list = list(range(player_num))
+        current_player_index_list = \
+            sample(current_player_index_list, player_num)
+
+        next_player_index_list = []
+
+        return current_player_index_list, next_player_index_list
+
+    def __init__(self, player_group: PlayerGroup,
+                 current_player_index_list: list, next_player_index_list: list,
+                 *, handler: logging.StreamHandler = None):
         self.logger = logging.getLogger('Tournament')
         self.logger.setLevel(logging.INFO)
 
         if handler is not None:
             self.logger.addHandler(handler)
 
-        self.player_list = player_list
-        self.current_player_index_list = list(range(len(player_list)))
-        self.old_player_num = len(player_list)
+        self.player_group = player_group
 
-        self.current_player_index_list = \
-            sample(self.current_player_index_list,
-                   len(self.current_player_index_list))
+        self.current_player_index_list = current_player_index_list
 
-        self.next_player_index_list = []
+        self.next_player_index_list = next_player_index_list
+
+        self.old_player_num = \
+            len(current_player_index_list)+len(next_player_index_list)
 
         self.is_match = False
         self.is_complete = False
@@ -74,7 +85,7 @@ class Tournament:
             raise RoundException('invalid round')
 
         for index in self.current_player_index_list:
-            self.player_list[index].score_up()
+            self.player_group.score_up(index)
 
         self.next_player_index_list.extend(self.current_player_index_list)
         self.current_player_index_list = \
@@ -83,7 +94,9 @@ class Tournament:
         self.next_player_index_list.clear()
 
         current_player_num = len(self.current_player_index_list)
-        self.is_complete = current_player_num == self.old_player_num
+        is_no_change_player_num = current_player_num == self.old_player_num
+        is_no_player = current_player_num < 2
+        self.is_complete = is_no_change_player_num or is_no_player
 
         self.old_player_num = len(self.current_player_index_list)
 
@@ -109,9 +122,9 @@ class Tournament:
             self.match_count += 1
 
             left_player = \
-                self.player_list[self.left_player_index]
+                self.player_group.get_player(self.left_player_index)
             right_player = \
-                self.player_list[self.right_player_index]
+                self.player_group.get_player(self.right_player_index)
 
             self.logger.info(
                 f'--- left player index: {self.left_player_index} ---')
