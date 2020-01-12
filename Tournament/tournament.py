@@ -1,9 +1,8 @@
 from enum import Enum, auto
 from random import sample
 import logging
-from .type_hint import PlayerList, TwoPlayer
 import typing
-from .player import PlayerGroup
+from .player import PlayerGroup, TwoPlayer
 
 
 class TournamentException(Exception):
