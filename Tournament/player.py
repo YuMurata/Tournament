@@ -37,6 +37,8 @@ class PlayerGroup(metaclass=ABCMeta):
     score_up(self, index: int) -> NoReturn
     
     get_player(self, index: int) -> Player
+
+    get_player_num(self) -> int
     '''
 
     @abstractclassmethod
@@ -45,6 +47,10 @@ class PlayerGroup(metaclass=ABCMeta):
 
     @abstractclassmethod
     def get_player(self, index: int) -> Player:
+        pass
+
+    @abstractclassmethod
+    def get_player_num(self) -> int:
         pass
 
 TwoPlayer = typing.Tuple[Player, Player]

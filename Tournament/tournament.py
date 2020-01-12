@@ -76,7 +76,8 @@ class Tournament:
         self.logger.info(f'start {self.round_count}th round')
         self.logger.info(
             f'--- current player index: {self.current_player_index_list} ---')
-        score_list = [player.score for player in self.player_list]
+        score_list = [self.player_group.get_player(index).score
+                      for index in range(self.player_group.get_player_num())]
         self.logger.info(f'--- score: {score_list} ---')
 
     def _new_round(self):
