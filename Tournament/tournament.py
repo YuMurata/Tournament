@@ -2,7 +2,7 @@ from enum import Enum, auto
 from random import sample
 import logging
 import typing
-from .player import PlayerGroup, TwoPlayer
+from .player import PlayerGroup, TwoPlayer, PlayerList
 
 
 class TournamentException(Exception):
@@ -43,8 +43,7 @@ class Tournament:
 
         return current_player_index_list, next_player_index_list
 
-    def __init__(self, player_group: PlayerGroup,
-                 current_player_index_list: list, next_player_index_list: list,
+    def __init__(self, player_list: PlayerList,
                  *, handler: logging.StreamHandler = None):
         self.logger = logging.getLogger('Tournament')
         self.logger.setLevel(logging.INFO)
@@ -52,14 +51,16 @@ class Tournament:
         if handler is not None:
             self.logger.addHandler(handler)
 
-        self.player_group = player_group
+        self.player_list = player_list
+        player_num = len(player_list)
 
-        self.current_player_index_list = current_player_index_list
+        self.current_player_index_list = list(range(player_num))
+        self.current_player_index_list = \
+            sample(self.current_player_index_list, player_num)
 
-        self.next_player_index_list = next_player_index_list
+        self.next_player_index_list = []
 
-        self.old_player_num = \
-            len(current_player_index_list)+len(next_player_index_list)
+        self.old_player_num = player_num
 
         self.is_match = False
         self.is_complete = False
@@ -76,8 +77,7 @@ class Tournament:
         self.logger.info(f'start {self.round_count}th round')
         self.logger.info(
             f'--- current player index: {self.current_player_index_list} ---')
-        score_list = [self.player_group.get_player(index).score
-                      for index in range(self.player_group.get_player_num())]
+        score_list = [player.score for player in self.player_list]
         self.logger.info(f'--- score: {score_list} ---')
 
     def _new_round(self):
@@ -85,7 +85,7 @@ class Tournament:
             raise RoundException('invalid round')
 
         for index in self.current_player_index_list:
-            self.player_group.score_up(index)
+            self.player_list[index].score_up()
 
         self.next_player_index_list.extend(self.current_player_index_list)
         self.current_player_index_list = \
@@ -122,9 +122,9 @@ class Tournament:
             self.match_count += 1
 
             left_player = \
-                self.player_group.get_player(self.left_player_index)
+                self.player_list[self.left_player_index]
             right_player = \
-                self.player_group.get_player(self.right_player_index)
+                self.player_list[self.right_player_index]
 
             self.logger.info(
                 f'--- left player index: {self.left_player_index} ---')

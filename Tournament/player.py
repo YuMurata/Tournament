@@ -54,3 +54,4 @@ class PlayerGroup(metaclass=ABCMeta):
         pass
 
 TwoPlayer = typing.Tuple[Player, Player]
+PlayerList = typing.List[Player]
