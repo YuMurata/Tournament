@@ -31,27 +31,5 @@ class Player(metaclass=ABCMeta):
         return {'score': self.score, 'param': self.param}
 
 
-class PlayerGroup(metaclass=ABCMeta):
-    '''implement
-    
-    score_up(self, index: int) -> NoReturn
-    
-    get_player(self, index: int) -> Player
-
-    get_player_num(self) -> int
-    '''
-
-    @abstractclassmethod
-    def score_up(self, index: int) -> typing.NoReturn:
-        pass
-
-    @abstractclassmethod
-    def get_player(self, index: int) -> Player:
-        pass
-
-    @abstractclassmethod
-    def get_player_num(self) -> int:
-        pass
-
 TwoPlayer = typing.Tuple[Player, Player]
 PlayerList = typing.List[Player]

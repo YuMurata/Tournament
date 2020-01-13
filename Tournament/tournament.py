@@ -2,7 +2,7 @@ from enum import Enum, auto
 from random import sample
 import logging
 import typing
-from .player import PlayerGroup, TwoPlayer, PlayerList
+from .player import TwoPlayer, PlayerList
 
 
 class TournamentException(Exception):
