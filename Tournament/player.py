@@ -4,7 +4,14 @@ import typing
 
 class Player(metaclass=ABCMeta):
     '''
-    implement decode(self)
+    implement
+    ---
+    decode(self)
+
+    decode so that you can compare
+
+    - - -
+    player has __init__(self, param: typing.Any, score: int = 1)
     '''
 
     def __init__(self, param: typing.Any, score: int = 1):
@@ -19,7 +26,7 @@ class Player(metaclass=ABCMeta):
         self.score = score
 
     @abstractclassmethod
-    def decode(self):
+    def decode(self) -> typing.Any:
         '''
         '''
         pass
