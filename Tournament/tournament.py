@@ -9,6 +9,7 @@ class TournamentException(Exception):
     pass
 
 
+
 class RoundException(TournamentException):
     pass
 
